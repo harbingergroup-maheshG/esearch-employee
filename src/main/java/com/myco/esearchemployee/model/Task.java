@@ -1,5 +1,7 @@
 package com.myco.esearchemployee.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
@@ -12,7 +14,7 @@ public class Task {
 	private String title;
 	private String description;
 	private String estimatedTime;
-	private Employee employee;
+	private List<Employee> employee;
 	
 	@Override
 	public String toString() {
@@ -44,10 +46,10 @@ public class Task {
 	public void setEstimatedTime(String estimatedTime) {
 		this.estimatedTime = estimatedTime;
 	}
-	public Employee getEmployee() {
+	public List<Employee> getEmployee() {
 		return employee;
 	}
-	public void setEmployee(Employee employee) {
+	public void setEmployee(List<Employee> employee) {
 		this.employee = employee;
 	}
 

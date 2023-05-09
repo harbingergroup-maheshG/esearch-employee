@@ -19,18 +19,18 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/")
 public class EmployeeRest {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeRest.class);
-	
+
 	@Autowired
 	private EmployeeESService employeeESService;
-	
+
 	@PostMapping("/employee")
-	public ResponseEntity<Object>  storeEmployeeInfo(@RequestBody Employee employee) {
+	public ResponseEntity<Object> storeEmployeeInfo(@RequestBody Employee employee) {
 		LOGGER.info(">>>> storeEmployeeInfo() employee : {} ", employee);
 		String response = employeeESService.saveEmployeeData(employee);
 		LOGGER.info("<<<< storeEmployeeInfo() response : {} ", response);
-		return new ResponseEntity<>(response, HttpStatus.OK);		
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.myco.esearchemployee.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 import com.myco.esearchemployee.model.Employee;
 import com.myco.esearchemployee.repository.ElasticSearchQuery;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class EmployeeESServiceImpl implements EmployeeESService {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeESServiceImpl.class);
 
 	@Autowired
@@ -25,21 +28,21 @@ public class EmployeeESServiceImpl implements EmployeeESService {
 		LOGGER.info(">>>> checkValidEmployee() : userId : {} ", userId);
 		List<Employee> employees = new ArrayList<>();
 		try {
-			 Employee employee = elasticSearchQuery.getDocumentById(userId);
-			if (null!=employee) {
-				if (userId.equals("HSADMIN01") && password.equals(employee.getPassword())) {
+			Employee employee = elasticSearchQuery.getDocumentById(userId);
+			if (null != employee) {
+				if (userId.equals("HSADMIN") && password.equals(employee.getPassword())) {
 					return getEmployeeList();
-				}else if(password.equals(employee.getPassword())){
+				} else if (password.equals(employee.getPassword())) {
 					LOGGER.info("<<<< checkValidEmployee() : employee : {} ", employee);
 					employees.add(employee);
 					return employees;
 				}
 			}
-			
-		}catch(Exception e ) {
+
+		} catch (Exception e) {
 			LOGGER.error(">>>> failed to fetch employee for userId : {} , exception : {} ", userId, e.getMessage());
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -58,15 +61,15 @@ public class EmployeeESServiceImpl implements EmployeeESService {
 	public List<Employee> getEmployeeList() {
 		LOGGER.info(">>>> getEmployeeList() ");
 		try {
-			List<Employee> employees =  elasticSearchQuery.searchAllDocuments();
-			if(null!=employees && !employees.isEmpty()) {
-				LOGGER.info(">>>> getEmployeeList(), employees:{}" , employees.toString());
+			List<Employee> employees = elasticSearchQuery.searchAllDocuments();
+			if (null != employees && !employees.isEmpty()) {
+				LOGGER.info("<<<< getEmployeeList(), employees:{}", employees);
 				return employees;
 			}
 		} catch (Exception e) {
 			LOGGER.error(">>>> error on getEmployeeList(), exception : {} ", e.getMessage());
 		}
-		return null;
-	}  
-	  
+		return Collections.emptyList();
+	}
+
 }
